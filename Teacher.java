@@ -19,8 +19,8 @@ public class Teacher extends Employee {
 	}
 	
 	public String getRoleInfo() {
-		return"";
-	}// needs modification
+    return "Teacher - Subject: " + subject + ", Years of Experience: " + yearsOfExperience;
+	}
 	
 	public String toString() {
 		return "name: " + getName() + "  ID: " + getId() + "  age: " + getAge() + "  Department: " + getDepartment() + "  Base Salary: " + getBaseSalary() + "  Subject: " + subject + "  Years of Experience: " + yearsOfExperience;

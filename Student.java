@@ -1,5 +1,5 @@
 
-public class Student extends Person implements Payable {
+public class Student extends Person {
 	private String gradeLevel;
 	private double average;
 	private double feePerMonth;
@@ -87,8 +87,8 @@ public class Student extends Person implements Payable {
 	}// needs modification
 	
 	public String getRoleInfo() {
-		return"";
-	}// needs modification
+    return "Student - Grade Level: " + gradeLevel + ", Average: " + average;
+	}
 	
 	public String toString() {
 		return "name: " + getName() + "  ID: " + getId() + "  age: " + getAge() + "  Grade Level: " + gradeLevel + "  Average: " + average + "  Fee per month: " + feePerMonth;

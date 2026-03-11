@@ -1,5 +1,5 @@
 
-public abstract class Person {
+public abstract class Person implements Payable {
 	private String id;
 	private String name;
 	private int age;
@@ -29,6 +29,7 @@ public abstract class Person {
 	public void setAge(int age) {
 		this.age = age;
 	}
+	public abstract double calculateMonthlyAmount();
 	
 	public abstract String getRoleInfo();
 	

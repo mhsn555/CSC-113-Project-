@@ -1,5 +1,5 @@
 
-public class AdminStaff extends Employee implements Payable {
+public class AdminStaff extends Employee {
 	private String position;
 	private double allowance;
 	
@@ -17,13 +17,10 @@ public class AdminStaff extends Employee implements Payable {
 		return allowance;
 	}
 	
-	public double calculateMonthlyAmount() {
-		return 0;
-	} // needs modification
 	
 	public String getRoleInfo() {
-		return "";
-	}// needs modification
+    return "Admin Staff - Position: " + position + ", Department: " + getDepartment();
+	}
 	
 	public String toString() {
 		return "name: " + getName() + "  ID: " + getId() + "  age: " + getAge() + "  Department: " + getDepartment() + "  Base Salary: " + getBaseSalary() + "  Position: " + position + "  Allowance: " + allowance;

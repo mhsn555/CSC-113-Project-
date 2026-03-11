@@ -29,10 +29,13 @@ public class Employee extends Person {
 		return "name: " + getName() + "  ID: " + getId() + "  age: " + getAge() + "  Department: " + department + "  Base Salary: " + baseSalary;
 	}
 	
+	public double calculateMonthlyAmount() {
+		return 0;
+	} // needs modification
 	
 	public String getRoleInfo() {
-		return"";
-	} // needs modification
+    return "Employee - Department: " + department;
+	}
 	
 	
 
