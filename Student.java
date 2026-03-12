@@ -12,6 +12,7 @@ public class Student extends Person {
 		this.average = average;
 		this.feePerMonth = feePerMonth;
 		clubsJoined = new Club [clubSize];
+		this.clubCount = 0;
 	}
 	
 	public String getGradeLevel() {
@@ -27,64 +28,68 @@ public class Student extends Person {
 	}
 	
 	public boolean joinClub(Club c) {
-		if(clubCount < clubsJoined.length) {
-			clubsJoined[clubCount++] = c;
-			return true;
-		}
-		else {
+		if(clubCount >= clubsJoined.length) {
 			System.out.println("Can't join more Clubs");
 			return false;
+		}
+		else if (hasJoinedClub(c.getClubName())){
+			System.out.println("Student already joined this club.");
+			return false;
+		}
+		else {
+			clubsJoined[clubCount++] = c;
+			return true;
+			
 		}
 	}
 	
 	public boolean leaveClub(String clubName) {
-		for(int i = 0 ; i < clubsJoined.length ; i++) {
+		for(int i = 0 ; i < clubCount ; i++) {
 			if(clubName.equals(clubsJoined[i].getClubName())) {
-				clubsJoined[i] = null;
-				System.out.println("Student just left " + clubName);
-				return true;
+				for (int j = i; j < clubCount - 1; j++) {
+					clubsJoined[j] = clubsJoined[j + 1];
+				}
+			clubsJoined[--clubCount] = null;
+			System.out.println("Student just left " + clubName);
+			return true;
 			}
 		}
+		System.out.println("Student did not join a club with that name.");
 		return false;
 	}
 	
 	public Club searchClub(String clubName) {
-		int index = -1;
-		for(int i = 0 ; i < clubsJoined.length ; i++) {
+		for(int i = 0 ; i < clubCount ; i++) {
 			if(clubName.equals(clubsJoined[i].getClubName()))
-				index = i;
+				return clubsJoined[i];
 		}
-		if(index >= 0)
-			return clubsJoined[index];
-		else {
-			System.out.println("there is Club with that name");
-			return clubsJoined[index];}
+		System.out.println("There is no club with that name.");
+		return null;
 	}
 	
-	public boolean hasJoinedClub() {
-		for(int i = 0 ; i < clubsJoined.length ; i++) {
-			if(clubsJoined[i] != null) 
+	public boolean hasJoinedClub(String clubName) {
+		for(int i = 0 ; i < clubCount ; i++) {
+			if(clubName.equals(clubsJoined[i].getClubName())) 
 				return true;
 		}
 		return false;
-	}// no need for parameter i think
+	}
 	
 	public void displayJoinedClubs() {
-		for(int i = 0 ; i < clubsJoined.length ; i++) {
-		if(hasJoinedClub() == false) {
+		if (clubCount == 0) {
 			System.out.println("Student didn't join any clubs.");
-			break;	
+			return;
 		}
+		for(int i = 0 ; i < clubCount ; i++) {
 		
-		else if(hasJoinedClub() && clubsJoined[i] != null)
-			System.out.println(clubsJoined[i].toString() + "\n **************************");
+		System.out.println(clubsJoined[i].toString() + "\n **************************");
 		
 		}
 	}
 	
 	public double calculateMonthlyAmount() {
-		return 0;
-	}// needs modification
+		return feePerMonth;
+	}
 	
 	public String getRoleInfo() {
     return "Student - Grade Level: " + gradeLevel + ", Average: " + average;
