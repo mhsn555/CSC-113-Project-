@@ -3,8 +3,8 @@ public class Teacher extends Employee {
 	private String subject;
 	private int yearsOfExperience;
 	
-	public Teacher(String id, String name, int age, String department, double baseSalary, String subject, int yearsOfExperience ) {
-		super(id,name,age,department,baseSalary);
+	public Teacher(String id, String name, int age, String department, double baseSalary, double allowance, String subject, int yearsOfExperience ) {
+		super(id,name,age,department,baseSalary, allowance);
 		this.subject = subject;
 		this.yearsOfExperience = yearsOfExperience;
 		
@@ -23,7 +23,7 @@ public class Teacher extends Employee {
 	}
 	
 	public String toString() {
-		return "name: " + getName() + "  ID: " + getId() + "  age: " + getAge() + "  Department: " + getDepartment() + "  Base Salary: " + getBaseSalary() + "  Subject: " + subject + "  Years of Experience: " + yearsOfExperience;
+		return super.toString() + "  Subject: " + subject + "  Years of Experience: " + yearsOfExperience;
 	}
 	
 

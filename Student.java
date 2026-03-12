@@ -96,7 +96,7 @@ public class Student extends Person {
 	}
 	
 	public String toString() {
-		return "name: " + getName() + "  ID: " + getId() + "  age: " + getAge() + "  Grade Level: " + gradeLevel + "  Average: " + average + "  Fee per month: " + feePerMonth;
+		return super.toString() + "  Grade Level: " + gradeLevel + "  Average: " + average + "  Fee per month: " + feePerMonth;
 	}
 	
 }
