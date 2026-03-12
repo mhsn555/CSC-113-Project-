@@ -10,7 +10,8 @@ public class Club {
 		this.clubName = clubName;
 		this.activityType = activityType;
 		this.supervisor = supervisor;
-		members = new Student [size];
+		this.members = new Student [size];
+		this.memberCount = 0;
 	}
 	
 	public String getClubName() {
@@ -27,65 +28,60 @@ public class Club {
 	}
 	
 	public boolean addMember(Student s) {
-		if(memberCount < members.length) {
-			members [memberCount++] = s;
-		return true;}
-		
-		else {
+		if(memberCount >= members.length) {
 			System.out.println("The club is full.");
 			return false;
+			}
+		else if (containsMember(s.getId())){
+			System.out.println("This student is already a member.");
+			return false;
+		}
+		else {
+			members [memberCount++] = s;
+			return true;
 		}
 			
 	}
 	
 	public boolean removeMemberById(String id) {
-		for(int i = 0 ; i < members.length ; i++) {
-			if (members[i] == null)
-				continue;
-			
+		for(int i = 0 ; i < memberCount ; i++) {
 			if(id.equals(members[i].getId())) {
-				members[i] = null;
+				for (int j = i; j < memberCount - 1; j++) {
+					members[j] = members[j + 1];
+				}
+				members[--memberCount] = null;
 				return true;
 			}
-			else
-				continue;
 		}
 			return false;
 	}
 	
 	public Student searchMemberById(String id) {
-		int index = -1;
-		for(int i = 0 ; i < members.length ; i++) {
-			if(id == members[i].getId()) 
-				index = i;
+		for(int i = 0 ; i < memberCount ; i++) {
+			if (id.equals(members[i].getId())) {
+				return members[i];
+			}
 		}
-		if(index >= 0)
-		return members[index];
-		else {
-			System.out.println("there is no member with that ID");
-			return members[index];
-		}
+		System.out.println("There is no member with that ID.");
+		return null;
 	}
 	
-	public boolean containsMember() {
-		for(int i = 0 ; i < members.length ; i++) {
-			if(members[i] != null) 
+	public boolean containsMember(String id) {
+		for(int i = 0 ; i < memberCount ; i++) {
+			if(id.equals(members[i].getId())) 
 				return true;	
 		}
 		return false;
-	}// no need for parameter i think
+	}
 	
 	public void displayMembers() {
-		for(int i = 0 ; i < members.length ; i++) {
-			if(containsMember() == false) {
-				System.out.println("there is no members in " + clubName);
-				break;	
-			}
-			
-			else if(containsMember() && members[i] != null)
-				System.out.println(members[i].toString() + "\n **************************");
-			
-			}
+		if (memberCount == 0) {
+			System.out.println("There are no members in " + clubName);
+			return;
+		}
+		for (int i = 0; i < memberCount; i++) {
+			System.out.println(members[i].toString() + "\n **************************");
+		}
 			}
 	
 	public String toString() {
