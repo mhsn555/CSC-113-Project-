@@ -340,4 +340,5 @@ public class SchoolTest {
 	System.out.print("goodbye.");
 }
 }
-	
+	// not finished and it maybe needs improvment
+
