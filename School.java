@@ -270,6 +270,29 @@ public class School implements Payable {
 
 		return true;
 	}
+	
+	public double calculateAllSalaries() {
+		double allSalaries = 0;
+		for(int i = 0 ; i < people.length ; i++) {
+			if(people[i] instanceof Employee) {
+				allSalaries += people[i].calculateMonthlyAmount();
+			}
+		}
+		return allSalaries;
+	}
+	
+	public double calculateAllFees() {
+		double allFees = 0;
+		for(int i = 0 ; i < people.length ; i++) {
+			if(people[i] instanceof Student) {
+				allFees += people[i].calculateMonthlyAmount();
+			}
+			
+		}
+		return allFees;
+	}
+	
+	
 	public String toString() {
 		return "School Name: " + name + "  People Count: " + peopleCount + "  Classroom Count: " + classroomCount+ "  Club Count: " + clubCount;
 	}
