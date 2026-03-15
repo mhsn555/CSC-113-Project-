@@ -27,6 +27,10 @@ public class Student extends Person {
 		return feePerMonth;
 	}
 	
+	public void setFeePerMonth(double feePerMonth) {
+		this.feePerMonth = feePerMonth;
+	}
+	
 	public boolean joinClub(Club c) {
 		if(clubCount >= clubsJoined.length) {
 			System.out.println("Can't join more Clubs");
