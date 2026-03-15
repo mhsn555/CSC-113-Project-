@@ -39,6 +39,7 @@ public class SchoolTest {
 	int choice3;
 	int choice4;
 	int choice5;
+	int choice6;
 	
 	int answer;
 	do {
@@ -241,6 +242,7 @@ public class SchoolTest {
 					System.out.print("Enter the Id of the Student you want to add: ");
 				String add = input.next();
 				S.addStudentToClub(add, c2.getClubName());
+				if(c2.searchMemberById(add) != null)
 				System.out.println(c2.searchMemberById(add).getName() + " has been added to the club");
 					break;
 					
@@ -296,7 +298,7 @@ public class SchoolTest {
 						+ "\n 3- show all classrooms in the School"
 						+ "\n 4- remove a club from the School"
 						+ "\n 5- back to main menu"
-						+ "\n choose anumber:");
+						+ "\n choose a number:");
 							choice4 = input.nextInt();
 							
 						switch(choice4) {
@@ -335,10 +337,144 @@ public class SchoolTest {
 				}
 			}while(answer != 0);
 			break;
+			
+		case(4):
+			do {
+				System.out.print("Welcome Employee."
+						+ "\n do want to log in (1 for yes , 0 for no): ");
+				answer = input.nextInt();
+				
+				if(answer == 1) {
+					System.out.print("Enter your name and Id please."
+							+ "\n Name: ");
+					String n = input.next();
+					System.out.print("Id: ");
+					String i = input.next();
+					
+					if(n.equalsIgnoreCase(e1.getName()) && i.equals(e1.getId())) {
+						do {
+							System.out.print("Welcome " + e1.getName()
+							+ "\n what would you like to do ?"
+							+ "\n 1- Calculate all School staff's salaries"
+							+ "\n 2- Calculate all Student's fees per month"
+							+ "\n 3- back to main menu"
+							+ "\n choose a number: ");
+							choice5 = input.nextInt();
+							
+							switch(choice5){
+							case(1):
+								System.out.println("all Staff's Salaries equal: " + S.calculateAllSalaries());
+								break;
+								
+							case(2):
+								System.out.println("all Student fees equal: " + S.calculateAllFees());
+								break;
+								
+							case(3):
+								break;
+							
+							default:
+								System.out.println("Wrong number");
+								break;
+							}
+							
+						}while(choice5 != 3);
+					}
+					
+					else if(n.equalsIgnoreCase(e2.getName()) && i.equals(e2.getId())) {
+						do {
+							System.out.print("Welcome " + e2.getName()
+							+ "\n what would you like to do ?"
+							+ "\n 1- change an Employee's Base Salary or allownace"
+							+ "\n 2- change a Student's fee's"
+							+ "\n 3- remove an Employee from the School"
+							+ "\n 4- back to main menu"
+							+ "\n choose a number: ");
+							choice5 = input.nextInt();
+							
+							switch(choice5) {
+							case(1):
+								do {System.out.print("which do you want to change ?"
+										+ "\n 1- Base Salary"
+										+ "\n 2- allowance"
+										+ "\n 3- back to your menu"
+										+ "\n choose a number: ");
+								choice6 =input.nextInt();
+								
+								switch(choice6) {
+								case(1):
+									System.out.print("write the Id for the Employee that you want to change their base Salary: ");
+								String change1 =input.next();
+								if(S.searchPersonById(change1) instanceof Employee) {
+									Employee emp = (Employee)S.searchPersonById(change1);
+									System.out.print("enter the new Base Salary: ");
+									double newS = input.nextDouble();
+									emp.setBaseSalary(newS);
+								}
+								else
+									System.out.println("there is no Employee with that Id");
+									break;
+									
+								case(2):
+									System.out.print("write the Id for the Employee that you want to change their allowance: ");
+								String change2 =input.next();
+								
+								if(S.searchPersonById(change2) instanceof Employee) {
+									Employee emp = (Employee)S.searchPersonById(change2);
+									System.out.print("enter the new allowance: ");
+									double newA = input.nextDouble();
+									emp.setAllowance(newA);
+								}
+									break;
+									
+								case(3):
+									break;
+								}
+											}while(choice6 != 3);
+								
+								break;
+								
+							case(2):
+								System.out.print("Enter the Id of the Student you want to change their fees: ");
+							String change = input.next();
+							if(S.searchPersonById(change) instanceof Student) {
+								Student st = (Student)S.searchPersonById(change);
+								System.out.print("enter the new fees: ");
+								double newF = input.nextDouble();
+								st.setFeePerMonth(newF);
+
+							}
+							
+							else
+								System.out.println("there is no Student with that Id");
+								break;
+								
+							case(3):
+								System.out.print("Enter the id of the Employee you want to remove: ");
+							String remove = input.next();
+							if(S.searchPersonById(remove) instanceof Employee) 
+								S.removePersonById(remove);
+							else
+								System.out.println("there is no Employee with that Id");
+
+								break;
+								
+							case(4):
+								break;
+							
+							default:
+								System.out.println("Wrong number");
+								break;
+							}
+							
+						}while(choice5 != 4);
+					}
+				}
+			}while(answer != 0);
+			break;
 	}
 	}while(choice1 > 0 && choice1 <= 4);
 	System.out.print("goodbye.");
 }
 }
-	// not finished and it maybe needs improvment
 
