@@ -48,18 +48,30 @@ public class Student extends Person {
 	}
 	
 	public boolean leaveClub(String clubName) {
+		return leaveClubInternal(clubName, true, true);
+	}
+	
+	boolean leaveClubSilently(String clubName) {
+		return leaveClubInternal(clubName, false, false);
+	}
+	
+	private boolean leaveClubInternal(String clubName, boolean printSuccess, boolean printFailure) {
 		for(int i = 0 ; i < clubCount ; i++) {
 			if(clubName.equals(clubsJoined[i].getClubName())) {
 				for (int j = i; j < clubCount - 1; j++) {
 					clubsJoined[j] = clubsJoined[j + 1];
 				}
-			clubsJoined[--clubCount] = null;
-			System.out.println("Student just left " + clubName);
-			return true;
+				clubsJoined[--clubCount] = null;
+				if (printSuccess) {
+					System.out.println("Student just left " + clubName);
+				}
+				return true;
+				}
 			}
-		}
-		System.out.println("Student did not join a club with that name.");
-		return false;
+			if (printFailure) {
+				System.out.println("Student did not join a club with that name.");
+			}
+			return false;
 	}
 	
 	public Club searchClub(String clubName) {

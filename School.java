@@ -41,6 +41,15 @@ public class School implements Payable {
 						clubs[j].removeMemberById(id);
 					}
 				}
+				
+				if (people[i] instanceof Teacher) {
+					for (int j = 0; j < clubCount; j++) {
+						Teacher supervisor = clubs[j].getSupervisor();
+						if (supervisor != null && id.equals(supervisor.getId())) {
+							clubs[j].setSupervisor(null);
+						}
+					}
+				}
 
 				for (int j = i; j < peopleCount - 1; j++) {
 					people[j] = people[j + 1];
@@ -106,6 +115,12 @@ public class School implements Payable {
 	public boolean removeClubByName(String clubName) {
 		for (int i = 0; i < clubCount; i++) {
 			if (clubName.equals(clubs[i].getClubName())) {
+				for (int j = 0; j < peopleCount; j++) {
+					if (people[j] instanceof Student) {
+						((Student) people[j]).leaveClubSilently(clubName);
+					}
+				}
+				
 				for (int j = i; j < clubCount - 1; j++) {
 					clubs[j] = clubs[j + 1];
 				}
@@ -122,6 +137,16 @@ public class School implements Payable {
 	public Club searchClubByName(String clubName) {
 		for (int i = 0; i < clubCount; i++) {
 			if (clubName.equals(clubs[i].getClubName())) {
+				return clubs[i];
+			}
+		}
+		return null;
+	}
+	
+	public Club searchClubBySupervisorId(String supervisorId) {
+		for (int i = 0; i < clubCount; i++) {
+			Teacher supervisor = clubs[i].getSupervisor();
+			if (supervisor != null && supervisorId.equals(supervisor.getId())) {
 				return clubs[i];
 			}
 		}
@@ -221,13 +246,13 @@ public class School implements Payable {
 			return false;
 		}
 
-		boolean addedToClub = c.addMember(s);
-		if (!addedToClub) {
-			s.leaveClub(clubName);
-			return false;
-		}
+			boolean addedToClub = c.addMember(s);
+			if (!addedToClub) {
+				s.leaveClubSilently(clubName);
+				return false;
+			}
 
-		return true;
+			return true;
 	}
 
 	// Removes a student from a club and updates both the Student object and the Club object
@@ -257,13 +282,14 @@ public class School implements Payable {
 			return false;
 		}
 
-		boolean removedFromStudent = s.leaveClub(clubName);
-		if (!removedFromStudent) {
+		boolean removedFromClub = c.removeMemberById(studentId);
+		if (!removedFromClub) {
+			System.out.println("This student is not a member of that club.");
 			return false;
 		}
 
-		boolean removedFromClub = c.removeMemberById(studentId);
-		if (!removedFromClub) {
+		boolean removedFromStudent = s.leaveClub(clubName);
+		if (!removedFromStudent) {
 			c.addMember(s);
 			return false;
 		}
@@ -273,9 +299,10 @@ public class School implements Payable {
 	
 	public double calculateAllSalaries() {
 		double allSalaries = 0;
-		for(int i = 0 ; i < people.length ; i++) {
+		for(int i = 0 ; i < peopleCount ; i++) {
 			if(people[i] instanceof Employee) {
-				allSalaries += people[i].calculateMonthlyAmount();
+				Employee employee = (Employee) people[i];
+				allSalaries += employee.getBaseSalary() + employee.getAllowance();
 			}
 		}
 		return allSalaries;
@@ -283,7 +310,7 @@ public class School implements Payable {
 	
 	public double calculateAllFees() {
 		double allFees = 0;
-		for(int i = 0 ; i < people.length ; i++) {
+		for(int i = 0 ; i < peopleCount ; i++) {
 			if(people[i] instanceof Student) {
 				allFees += people[i].calculateMonthlyAmount();
 			}

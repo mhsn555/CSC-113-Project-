@@ -27,6 +27,10 @@ public class Club {
 		return supervisor;
 	}
 	
+	public void setSupervisor(Teacher supervisor) {
+		this.supervisor = supervisor;
+	}
+	
 	public boolean addMember(Student s) {
 		if(memberCount >= members.length) {
 			System.out.println("The club is full.");
@@ -85,7 +89,8 @@ public class Club {
 			}
 	
 	public String toString() {
-		return"club's name: " + clubName + "  club's activity: " + activityType + "  club's supervisor: " + supervisor;
+		String supervisorInfo = supervisor == null ? "None" : supervisor.toString();
+		return"club's name: " + clubName + "  club's activity: " + activityType + "  club's supervisor: " + supervisorInfo;
 		
 	}
 	
