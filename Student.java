@@ -51,7 +51,7 @@ public class Student extends Person {
 		return leaveClubInternal(clubName, true, true);
 	}
 	
-	boolean leaveClubSilently(String clubName) {
+	public boolean leaveClubSilently(String clubName) {
 		return leaveClubInternal(clubName, false, false);
 	}
 	
