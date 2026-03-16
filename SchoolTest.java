@@ -76,58 +76,58 @@ public class SchoolTest {
 	private static void handleStudentLogin(Scanner input, School school) {
 		int answer;
 		do {
-			System.out.println("Welcome Student."
-					+ "\n do you want to log in (1 for yes , 0 for no): ");
+			System.out.println("Welcome Student." + "\n do you want to log in (1 for yes , 0 for no): ");
 			answer = input.nextInt();
-			
-			if(answer == 1) {
-				Student student = authenticate(input, school, Student.class);
-				if(student == null) {
+
+			if (answer == 1) {
+				Person person = authenticate(input, school);
+
+				if (person instanceof Student) {
+					Student student = (Student) person;
+					showStudentMenu(input, student);
+				} else {
 					System.out.println("the name or Id is incorrect");
 				}
-				else {
-					showStudentMenu(input, student);
-				}
 			}
-		} while(answer != 0);
+		} while (answer != 0);
 	}
-	
+
 	private static void handleTeacherLogin(Scanner input, School school) {
 		int answer;
 		do {
-			System.out.print("Welcome Teacher"
-					+ "\n do you want to log in (1 for yes , 0 for no): ");
+			System.out.print("Welcome Teacher" + "\n do you want to log in (1 for yes , 0 for no): ");
 			answer = input.nextInt();
-			
-			if(answer == 1) {
-				Teacher teacher = authenticate(input, school, Teacher.class);
-				if(teacher == null) {
+
+			if (answer == 1) {
+				Person person = authenticate(input, school);
+
+				if (person instanceof Teacher) {
+					Teacher teacher = (Teacher) person;
+					showTeacherMenu(input, school, teacher);
+				} else {
 					System.out.println("the name or Id is incorrect.");
 				}
-				else {
-					showTeacherMenu(input, school, teacher);
-				}
 			}
-		} while(answer != 0);
+		} while (answer != 0);
 	}
-	
+
 	private static void handleAdminLogin(Scanner input, School school) {
 		int answer;
 		do {
-			System.out.print("Welcome admin."
-					+ "\n do want to log in (1 for yes , 0 for no): ");
+			System.out.print("Welcome admin." + "\n do want to log in (1 for yes , 0 for no): ");
 			answer = input.nextInt();
-			
-			if(answer == 1) {
-				AdminStaff admin = authenticate(input, school, AdminStaff.class);
-				if(admin == null) {
+
+			if (answer == 1) {
+				Person person = authenticate(input, school);
+
+				if (person instanceof AdminStaff) {
+					AdminStaff admin = (AdminStaff) person;
+					showAdminMenu(input, school, admin);
+				} else {
 					System.out.println("The name or Id is incorrect.");
 				}
-				else {
-					showAdminMenu(input, school, admin);
-				}
 			}
-		} while(answer != 0);
+		} while (answer != 0);
 	}
 	
 	private static void handleEmployeeLogin(Scanner input, School school, String financeEmployeeId, String hrEmployeeId) {
@@ -441,12 +441,8 @@ public class SchoolTest {
 		} while(choice != 3);
 	}
 	
-	private static <T extends Person> T authenticate(Scanner input, School school, Class<T> type) {
-		Person person = readPersonByCredentials(input, school);
-		if(type.isInstance(person)) {
-			return type.cast(person);
-		}
-		return null;
+	private static Person authenticate(Scanner input, School school) {
+		return readPersonByCredentials(input, school);
 	}
 	
 	private static Employee authenticateEmployee(Scanner input, School school) {
