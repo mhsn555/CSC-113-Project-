@@ -2,7 +2,7 @@
 
 This repository contains Phase 1 of our project for the `CSC 113` course at `KSU`.
 
-The project was completed by:
+The project was done by:
 
 - `Abdulmohsen Alahmary`
 - `Alfarouq Alshukri`
@@ -15,11 +15,13 @@ Instructor:
 
 This project implements a console-based school management system in Java. The system models the main parts of a school environment using object-oriented programming concepts we took throughout the course such as:
 
+- composition and aggregation
+- encapsulation
 - inheritance
 - abstraction
 - interfaces
-- composition and aggregation
-- encapsulation
+- recursion
+
 
 The program manages people and school resources, including:
 
