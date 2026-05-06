@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class SchoolTest {
-	public static void main(String [] args) {
+	public static void main(String [] args) throws ClubFullException {
 		Scanner input = new Scanner(System.in);
 		
 		School school = new School("int. School" , 10 , 2 , 2);
@@ -92,7 +92,7 @@ public class SchoolTest {
 		} while (answer != 0);
 	}
 
-	private static void handleTeacherLogin(Scanner input, School school) {
+	private static void handleTeacherLogin(Scanner input, School school) throws ClubFullException {
 		int answer;
 		do {
 			System.out.print("Welcome Teacher" + "\n do you want to log in (1 for yes , 0 for no): ");
@@ -185,7 +185,7 @@ public class SchoolTest {
 		} while(choice != 3);
 	}
 	
-	private static void showTeacherMenu(Scanner input, School school, Teacher teacher) {
+	private static void showTeacherMenu(Scanner input, School school, Teacher teacher) throws ClubFullException{
 		int choice;
 		do {
 			System.out.print("Welcome Mr. " + teacher.getName()
@@ -454,16 +454,26 @@ public class SchoolTest {
 	}
 	
 	private static Person readPersonByCredentials(Scanner input, School school) {
-		System.out.print("Enter your name and Id please."
-				+ "\n Name: ");
-		String name = input.next();
-		System.out.print("Id: ");
-		String id = input.next();
-		
-		Person person = school.searchPersonById(id);
-		if(person != null && person.getName().equalsIgnoreCase(name)) {
-			return person;
+		try {
+			System.out.print("Enter your name and Id please."
+					+ "\n Name: ");
+			String name = input.next();
+			if(name.isEmpty()) {
+	            throw new IllegalArgumentException("Name cannot be empty.");
+			}
+			System.out.print("Id: ");
+			String id = input.next();
+			
+			Person person = school.searchPersonById(id);
+			if(person != null && person.getName().equalsIgnoreCase(name)) {
+				return person;
+			}
+			return null;
 		}
-		return null;
-	}
+		catch(IllegalArgumentException e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
+		}
+		
 }
