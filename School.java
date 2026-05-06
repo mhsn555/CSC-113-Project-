@@ -215,7 +215,7 @@ public class School implements Payable {
 	}
 
     // Adds a student to a club and updates both the Student object and the Club object
-	public boolean addStudentToClub(String studentId, String clubName) {
+	public boolean addStudentToClub(String studentId, String clubName) throws ClubFullException{
 		Person p = searchPersonById(studentId);
 		Club c = searchClubByName(clubName);
 
@@ -245,6 +245,7 @@ public class School implements Payable {
 		if (!addedToStudent) {
 			return false;
 		}
+		
 
 			boolean addedToClub = c.addMember(s);
 			if (!addedToClub) {
@@ -256,7 +257,7 @@ public class School implements Payable {
 	}
 
 	// Removes a student from a club and updates both the Student object and the Club object
-	public boolean removeStudentFromClub(String studentId, String clubName) {
+	public boolean removeStudentFromClub(String studentId, String clubName) throws ClubFullException{
 		Person p = searchPersonById(studentId);
 		Club c = searchClubByName(clubName);
 
