@@ -31,10 +31,10 @@ public class Club {
 		this.supervisor = supervisor;
 	}
 	
-	public boolean addMember(Student s) {
+	public boolean addMember(Student s) throws ClubFullException{
 		if(memberCount >= members.length) {
-			System.out.println("The club is full.");
-			return false;
+			throw new ClubFullException("The club is full.");
+			
 			}
 		else if (containsMember(s.getId())){
 			System.out.println("This student is already a member.");
