@@ -14,7 +14,7 @@ public class SchoolTest {
 		Teacher t1 = new Teacher("1234", "Adel" , 46 , "math" , 10000 , 15000 , "math" , 21);
 		Teacher t2 = new Teacher("4567", "osama" , 33 , "Science", 6500 , 9900 , "physics" , 12);
 		
-		Club c1 = new Club("Football" , "Football" , t1 , 2);
+		Club c1 = new Club("Football" , "Football" , t1 , 1);
 		Club c2 = new Club("Science" , "Science experiments" , t2 , 2);
 		
 		Employee e1 = new Employee("1122", "jehad" , 28 , "finance" , 18000 , 10000);
@@ -92,7 +92,7 @@ public class SchoolTest {
 		} while (answer != 0);
 	}
 
-	private static void handleTeacherLogin(Scanner input, School school) throws ClubFullException {
+	private static void handleTeacherLogin(Scanner input, School school){
 		int answer;
 		do {
 			System.out.print("Welcome Teacher" + "\n do you want to log in (1 for yes , 0 for no): ");
@@ -185,7 +185,7 @@ public class SchoolTest {
 		} while(choice != 3);
 	}
 	
-	private static void showTeacherMenu(Scanner input, School school, Teacher teacher) throws ClubFullException{
+	private static void showTeacherMenu(Scanner input, School school, Teacher teacher){
 		int choice;
 		do {
 			System.out.print("Welcome Mr. " + teacher.getName()
@@ -228,11 +228,16 @@ public class SchoolTest {
 				
 				System.out.print("Enter the Id of the Student you want to add: ");
 				String add = input.next();
-				if(school.addStudentToClub(add, supervisedClub.getClubName())) {
-					Person addedStudent = school.searchPersonById(add);
-					if(addedStudent != null) {
-						System.out.println(addedStudent.getName() + " has been added to the club");
+				try {
+					if(school.addStudentToClub(add, supervisedClub.getClubName())) {
+						Person addedStudent = school.searchPersonById(add);
+						if(addedStudent != null) {
+							System.out.println(addedStudent.getName() + " has been added to the club");
+						}
 					}
+				} catch (ClubFullException e) {
+					System.out.println(e.getMessage());
+					e.printStackTrace();
 				}
 				break;
 			
@@ -245,8 +250,13 @@ public class SchoolTest {
 				System.out.print("Enter the Id of the Student you want to delete: ");
 				String delete = input.next();
 				Person removedStudent = school.searchPersonById(delete);
-				if(school.removeStudentFromClub(delete, supervisedClub.getClubName()) && removedStudent != null) {
-					System.out.println(removedStudent.getName() + " has been removed from the club");
+				try {
+					if(school.removeStudentFromClub(delete, supervisedClub.getClubName()) && removedStudent != null) {
+						System.out.println(removedStudent.getName() + " has been removed from the club");
+					}
+				} catch (ClubFullException e) {
+					System.out.println(e.getMessage());
+					e.printStackTrace();
 				}
 				break;
 			
