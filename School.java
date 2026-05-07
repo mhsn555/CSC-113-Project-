@@ -1,3 +1,7 @@
+import java.io.*;
+import java.util.Scanner;
+
+
 public class School implements Payable {
 	private String name;
 	private int peopleCount;
@@ -7,6 +11,8 @@ public class School implements Payable {
 	private Person[] people;
 	private Classroom[] classrooms;
 	private Club[] clubs;
+	
+	
 
 	public School(String name, int peopleSize, int classroomSize, int clubSize) {
 		this.name = name;
@@ -17,6 +23,8 @@ public class School implements Payable {
 		this.classroomCount = 0;
 		this.clubCount = 0;
 	}
+	
+	
 
 	public boolean addPerson(Person p) {
 		if (peopleCount >= people.length) {
@@ -324,4 +332,64 @@ public class School implements Payable {
 	public String toString() {
 		return "School Name: " + name + "  People Count: " + peopleCount + "  Classroom Count: " + classroomCount+ "  Club Count: " + clubCount;
 	}
+	
+	public void saveLoginCount() {
+		PrintWriter writer = null;
+		try {
+			writer = new PrintWriter("login.txt");
+			for(int i = 0 ; i < peopleCount ; i++) {
+				
+				if(people[i] instanceof AdminStaff){
+					AdminStaff admin = (AdminStaff)people[i];
+					writer.println(admin.getPosition() + " " + admin.getName() + " has logged in: " + admin.getLoginCount() + " times");
+				}
+				
+				else if(people[i] instanceof Teacher) {
+					Teacher teacher = (Teacher)people[i];
+					writer.println("Mr." + teacher.getName() + " has logged in: " + teacher.getLoginCount() + " times");
+				}
+				
+				else if(people[i] instanceof Employee) {
+					Employee e = (Employee)people[i];
+					writer.println(e.getName() + " has logged in: " + e.getLoginCount() + " times");
+				}
+				
+				
+				else if(people[i] instanceof Student) {
+					Student student = (Student)people[i];
+					writer.println(student.getName() + " has logged in: " + student.getLoginCount() + " times");
+				}
+			}
+		}
+		catch(FileNotFoundException e1) {
+			System.out.println(e1.getMessage());
+		}
+		finally {
+			writer.close();
+		}
+	}
+	
+	public void readLoginCount() throws EOFException{
+		Scanner read = null;
+		try {
+			read = new Scanner(new File("login.txt"));
+			while(read.hasNextLine()) {
+				String r = read.nextLine();
+				System.out.println(r);
+			}
+			if(!read.hasNext())
+				throw new EOFException("End of the file");
+		
+		}
+		catch(EOFException e1) {
+			System.out.println(e1.getMessage());
+		}
+		catch(FileNotFoundException e2) {
+			System.out.println(e2.getMessage());
+		}
+		finally {
+			read.close();
+		}
+	}
+	
 }
