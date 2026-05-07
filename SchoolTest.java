@@ -1,3 +1,4 @@
+import java.io.EOFException;
 import java.util.Scanner;
 
 public class SchoolTest {
@@ -71,6 +72,7 @@ public class SchoolTest {
 		} while(choice1 != 5);
 		
 		System.out.print("goodbye.");
+		school.saveLoginCount();
 	}
 	
 	private static void handleStudentLogin(Scanner input, School school) {
@@ -85,6 +87,7 @@ public class SchoolTest {
 				if (person instanceof Student) {
 					Student student = (Student) person;
 					showStudentMenu(input, student);
+					student.incrementLoginCount();
 				} else {
 					System.out.println("the name or Id is incorrect");
 				}
@@ -104,6 +107,7 @@ public class SchoolTest {
 				if (person instanceof Teacher) {
 					Teacher teacher = (Teacher) person;
 					showTeacherMenu(input, school, teacher);
+					teacher.incrementLoginCount();
 				} else {
 					System.out.println("the name or Id is incorrect.");
 				}
@@ -123,6 +127,7 @@ public class SchoolTest {
 				if (person instanceof AdminStaff) {
 					AdminStaff admin = (AdminStaff) person;
 					showAdminMenu(input, school, admin);
+					admin.incrementLoginCount();
 				} else {
 					System.out.println("The name or Id is incorrect.");
 				}
@@ -144,9 +149,11 @@ public class SchoolTest {
 				}
 				else if(financeEmployeeId.equals(employee.getId())) {
 					showFinanceEmployeeMenu(input, school, employee);
+					employee.incrementLoginCount();
 				}
 				else if(hrEmployeeId.equals(employee.getId())) {
 					showHrEmployeeMenu(input, school, employee);
+					employee.incrementLoginCount();
 				}
 				else {
 					System.out.println("This employee does not have an assigned menu.");
@@ -283,7 +290,8 @@ public class SchoolTest {
 					+ "\n 2- Show all the clubs in the School"
 					+ "\n 3- show all classrooms in the School"
 					+ "\n 4- remove a club from the School"
-					+ "\n 5- back to main menu"
+					+ "\n 5- show login count for everyone in the School"
+					+ "\n 6- back to main menu"
 					+ "\n choose a number:");
 			choice = input.nextInt();
 			
@@ -307,8 +315,17 @@ public class SchoolTest {
 					System.out.println(delete + " club has been removed.");
 				}
 				break;
-			
+				
 			case(5):
+				try {
+					school.readLoginCount();
+				} catch (EOFException e) {
+					System.out.println(e.getMessage());
+					break;
+				}
+			break;
+			
+			case(6):
 				break;
 			
 			default:
@@ -485,5 +502,7 @@ public class SchoolTest {
 			return null;
 		}
 		}
+	
+	
 		
 }
