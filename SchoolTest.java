@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.io.EOFException;
 import java.util.Scanner;
 
@@ -5,7 +6,7 @@ public class SchoolTest {
 	public static void main(String [] args) throws ClubFullException {
 		Scanner input = new Scanner(System.in);
 		
-		School school = new School("int. School" , 10 , 2 , 2);
+		School school = new School("int. School" , 10 , 2);
 		
 		Classroom classroom = new Classroom("10" , "Classroom B" , 2);
 		
@@ -76,10 +77,12 @@ public class SchoolTest {
 	}
 	
 	private static void handleStudentLogin(Scanner input, School school) {
-		int answer;
+		int answer = 9;
 		do {
+			
 			System.out.println("Welcome Student." + "\n do you want to log in (1 for yes , 0 for no): ");
-			answer = input.nextInt();
+			try {
+				answer = input.nextInt();
 
 			if (answer == 1) {
 				Person person = authenticate(input, school);
@@ -92,72 +95,92 @@ public class SchoolTest {
 					System.out.println("the name or Id is incorrect");
 				}
 			}
+			}
+			catch(InputMismatchException e){
+				System.out.println("wrong input");
+				input.next();
+			}
 		} while (answer != 0);
 	}
 
 	private static void handleTeacherLogin(Scanner input, School school){
-		int answer;
+		int answer =9;
 		do {
 			System.out.print("Welcome Teacher" + "\n do you want to log in (1 for yes , 0 for no): ");
-			answer = input.nextInt();
+			try {
+				answer = input.nextInt();
 
-			if (answer == 1) {
-				Person person = authenticate(input, school);
+				if (answer == 1) {
+					Person person = authenticate(input, school);
 
-				if (person instanceof Teacher) {
-					Teacher teacher = (Teacher) person;
-					showTeacherMenu(input, school, teacher);
-					teacher.incrementLoginCount();
-				} else {
-					System.out.println("the name or Id is incorrect.");
+					if (person instanceof Teacher) {
+						Teacher teacher = (Teacher) person;
+						showTeacherMenu(input, school, teacher);
+						teacher.incrementLoginCount();
+					} else {
+						System.out.println("the name or Id is incorrect.");
+					}
 				}
+			}catch(InputMismatchException e) {
+				System.out.println("wrong input");
+				input.next();
 			}
 		} while (answer != 0);
 	}
 
 	private static void handleAdminLogin(Scanner input, School school) {
-		int answer;
+		int answer = 9;
 		do {
 			System.out.print("Welcome admin." + "\n do want to log in (1 for yes , 0 for no): ");
-			answer = input.nextInt();
+			try {
+				answer = input.nextInt();
 
-			if (answer == 1) {
-				Person person = authenticate(input, school);
+				if (answer == 1) {
+					Person person = authenticate(input, school);
 
-				if (person instanceof AdminStaff) {
-					AdminStaff admin = (AdminStaff) person;
-					showAdminMenu(input, school, admin);
-					admin.incrementLoginCount();
-				} else {
-					System.out.println("The name or Id is incorrect.");
+					if (person instanceof AdminStaff) {
+						AdminStaff admin = (AdminStaff) person;
+						showAdminMenu(input, school, admin);
+						admin.incrementLoginCount();
+					} else {
+						System.out.println("The name or Id is incorrect.");
+					}
 				}
+			}catch(InputMismatchException e) {
+				System.out.println("wrong input");
+				input.next();
 			}
 		} while (answer != 0);
 	}
 	
 	private static void handleEmployeeLogin(Scanner input, School school, String financeEmployeeId, String hrEmployeeId) {
-		int answer;
+		int answer = 9;
 		do {
 			System.out.print("Welcome Employee."
 					+ "\n do want to log in (1 for yes , 0 for no): ");
-			answer = input.nextInt();
-			
-			if(answer == 1) {
-				Employee employee = authenticateEmployee(input, school);
-				if(employee == null) {
-					System.out.println("the name or Id is incorrect.");
+			try {
+				answer = input.nextInt();
+				
+				if(answer == 1) {
+					Employee employee = authenticateEmployee(input, school);
+					if(employee == null) {
+						System.out.println("the name or Id is incorrect.");
+					}
+					else if(financeEmployeeId.equals(employee.getId())) {
+						showFinanceEmployeeMenu(input, school, employee);
+						employee.incrementLoginCount();
+					}
+					else if(hrEmployeeId.equals(employee.getId())) {
+						showHrEmployeeMenu(input, school, employee);
+						employee.incrementLoginCount();
+					}
+					else {
+						System.out.println("This employee does not have an assigned menu.");
+					}
 				}
-				else if(financeEmployeeId.equals(employee.getId())) {
-					showFinanceEmployeeMenu(input, school, employee);
-					employee.incrementLoginCount();
-				}
-				else if(hrEmployeeId.equals(employee.getId())) {
-					showHrEmployeeMenu(input, school, employee);
-					employee.incrementLoginCount();
-				}
-				else {
-					System.out.println("This employee does not have an assigned menu.");
-				}
+			}catch(InputMismatchException e) {
+				System.out.println("wrong input");
+				input.next();
 			}
 		} while(answer != 0);
 	}
@@ -331,7 +354,7 @@ public class SchoolTest {
 			default:
 				System.out.println("wrong number");
 			}
-		} while(choice != 5);
+		} while(choice != 6);
 	}
 	
 	private static void showFinanceEmployeeMenu(Scanner input, School school, Employee employee) {
