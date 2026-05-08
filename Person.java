@@ -3,11 +3,24 @@ public abstract class Person implements Payable {
 	private String id;
 	private String name;
 	private int age;
+	private int loginCount;
 	
 	public Person(String id ,String name,int age ) {
 		this.id = id;
 		this.name = name;
 		this.age = age;
+	}
+	
+	public int getLoginCount() {
+		return loginCount;
+	}
+	
+	public void setLoginCount(int loginCount) {
+		this.loginCount = loginCount;
+	}
+	
+	public void incrementLoginCount() {
+	    loginCount++;
 	}
 	
 	public String getId() {
