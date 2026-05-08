@@ -1,17 +1,18 @@
+import java.util.LinkedList;
 
 public class Club {
 	private String clubName;
 	private String activityType;
-	private int memberCount;
 	private Teacher supervisor;
-	private Student [] members;
+	private LinkedList <Student> members;
+	private int maxSize;
 	
 	public Club(String clubName, String activityType, Teacher supervisor, int size) {
 		this.clubName = clubName;
 		this.activityType = activityType;
 		this.supervisor = supervisor;
-		this.members = new Student [size];
-		this.memberCount = 0;
+		this.members = new LinkedList<>();
+		maxSize = size;
 	}
 	
 	public String getClubName() {
@@ -31,67 +32,72 @@ public class Club {
 		this.supervisor = supervisor;
 	}
 	
+	
+	public boolean containsMember(String id) {
+
+	    for (Student s : members) {
+	        if (id.equals(s.getId())) {
+	            return true;
+	        }
+	    }
+
+	    return false;
+	}
+	
+	
 	public boolean addMember(Student s) throws ClubFullException{
-		if(memberCount >= members.length) {
-			throw new ClubFullException("The club is full.");
-			
-			}
-		else if (containsMember(s.getId())){
-			System.out.println("This student is already a member.");
-			return false;
-		}
-		else {
-			members [memberCount++] = s;
-			return true;
-		}
+		 if (members.size() >= maxSize) 
+		        throw new ClubFullException("The club is full.");
+
+		 else if (containsMember(s.getId())) {
+	        System.out.println("This student is already a member.");
+	        return false;
+	    }
+		 else {
+	    members.add(s);
+	    return true;
+	    }
 			
 	}
 	
 	public boolean removeMemberById(String id) {
-		for(int i = 0 ; i < memberCount ; i++) {
-			if(id.equals(members[i].getId())) {
-				for (int j = i; j < memberCount - 1; j++) {
-					members[j] = members[j + 1];
-				}
-				members[--memberCount] = null;
-				return true;
-			}
-		}
-			return false;
+
+	    for (Student s : members) {
+	        if (id.equals(s.getId())) {
+	            members.remove(s);
+	            return true;
+	        }
+	    }
+
+	    return false;
 	}
 	
 	public Student searchMemberById(String id) {
-		for(int i = 0 ; i < memberCount ; i++) {
-			if (id.equals(members[i].getId())) {
-				return members[i];
-			}
-		}
-		System.out.println("There is no member with that ID.");
-		return null;
-	}
-	
-	public boolean containsMember(String id) {
-		for(int i = 0 ; i < memberCount ; i++) {
-			if(id.equals(members[i].getId())) 
-				return true;	
-		}
-		return false;
+
+	    for (Student s : members) {
+	        if (id.equals(s.getId())) {
+	            return s;
+	        }
+	    }
+
+	    System.out.println("There is no member with that ID.");
+	    return null;
 	}
 	
 	public void displayMembers() {
-		if (memberCount == 0) {
-			System.out.println("There are no members in " + clubName);
-			return;
-		}
-		for (int i = 0; i < memberCount; i++) {
-			System.out.println(members[i].toString() + "\n **************************");
-		}
-			}
+
+	    if (members.isEmpty()) {
+	        System.out.println("There are no members in " + clubName);
+	        return;
+	    }
+
+	    for (Student s : members) {
+	        System.out.println(s + "\n **************************");
+	    }
+	}
 	
 	public String toString() {
-		String supervisorInfo = supervisor == null ? "None" : supervisor.toString();
-		return"club's name: " + clubName + "  club's activity: " + activityType + "  club's supervisor: " + supervisorInfo;
-		
+		return "Club name: " + clubName + "  Club's Activity: " + activityType + "  The supervisor for the Club " + supervisor;
 	}
 	
 	
