@@ -1,11 +1,11 @@
 import java.util.InputMismatchException;
 import java.io.EOFException;
+import java.io.IOException;
 import java.util.Scanner;
+import javax.swing.SwingUtilities;
 
 public class SchoolTest {
-	public static void main(String [] args) throws ClubFullException {
-		Scanner input = new Scanner(System.in);
-		
+	public static void main(String... args) {
 		School school = new School("int. School" , 10 , 2);
 		
 		Classroom classroom = new Classroom("10" , "Classroom B" , 2);
@@ -35,7 +35,17 @@ public class SchoolTest {
 		school.addPerson(e2);
 		school.addPerson(admin);
 		
-		int choice1;
+		if(args.length == 0 || !args[0].equalsIgnoreCase("console")) {
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					new SchoolGUI(school).show();
+				}
+			});
+			return;
+		}
+		
+		Scanner input = new Scanner(System.in);
+		int choice1 = 0;
 		do {
 			System.out.print("Welcome to the School System."
 					+ "\n 1- Student log in"
@@ -44,7 +54,14 @@ public class SchoolTest {
 					+ "\n 4- Empoloyee log in"
 					+ "\n 5- to get out"
 					+ "\n choose a number to log in: ");
-			choice1 = input.nextInt();
+			try {
+				choice1 = input.nextInt();
+			}
+			catch(InputMismatchException e) {
+				System.out.println("wrong input");
+				input.next();
+				continue;
+			}
 			
 			switch(choice1) {
 			case(1):
@@ -267,7 +284,6 @@ public class SchoolTest {
 					}
 				} catch (ClubFullException e) {
 					System.out.println(e.getMessage());
-					e.printStackTrace();
 				}
 				break;
 			
@@ -286,7 +302,6 @@ public class SchoolTest {
 					}
 				} catch (ClubFullException e) {
 					System.out.println(e.getMessage());
-					e.printStackTrace();
 				}
 				break;
 			
@@ -305,7 +320,7 @@ public class SchoolTest {
 	}
 	
 	private static void showAdminMenu(Scanner input, School school, AdminStaff admin) {
-		int choice;
+		int choice = 0;
 		do {
 			System.out.print("Welcome Mr. " + admin.getName()
 					+ "\n what would you like to do ?"
@@ -314,9 +329,17 @@ public class SchoolTest {
 					+ "\n 3- show all classrooms in the School"
 					+ "\n 4- remove a club from the School"
 					+ "\n 5- show login count for everyone in the School"
-					+ "\n 6- back to main menu"
+					+ "\n 6- show saved user input"
+					+ "\n 7- back to main menu"
 					+ "\n choose a number:");
-			choice = input.nextInt();
+			try {
+				choice = input.nextInt();
+			}
+			catch(InputMismatchException e) {
+				System.out.println("wrong input");
+				input.next();
+				continue;
+			}
 			
 			switch(choice) {
 			case(1):
@@ -349,12 +372,16 @@ public class SchoolTest {
 			break;
 			
 			case(6):
+				System.out.println(school.readSavedUserInput());
+				break;
+			
+			case(7):
 				break;
 			
 			default:
 				System.out.println("wrong number");
 			}
-		} while(choice != 6);
+		} while(choice != 7);
 	}
 	
 	private static void showFinanceEmployeeMenu(Scanner input, School school, Employee employee) {
@@ -513,6 +540,12 @@ public class SchoolTest {
 			}
 			System.out.print("Id: ");
 			String id = input.next();
+			try {
+				school.saveUserInput("Console login", name, id);
+			}
+			catch(IOException e) {
+				System.out.println("Could not save user input: " + e.getMessage());
+			}
 			
 			Person person = school.searchPersonById(id);
 			if(person != null && person.getName().equalsIgnoreCase(name)) {

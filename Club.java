@@ -1,17 +1,15 @@
-import java.util.LinkedList;
-
 public class Club {
 	private String clubName;
 	private String activityType;
 	private Teacher supervisor;
-	private LinkedList <Student> members;
+	private CustomLinkedList<Student> members;
 	private int maxSize;
 	
 	public Club(String clubName, String activityType, Teacher supervisor, int size) {
 		this.clubName = clubName;
 		this.activityType = activityType;
 		this.supervisor = supervisor;
-		this.members = new LinkedList<>();
+		this.members = new CustomLinkedList<>();
 		maxSize = size;
 	}
 	
@@ -35,7 +33,8 @@ public class Club {
 	
 	public boolean containsMember(String id) {
 
-	    for (Student s : members) {
+	    for (int i = 0; i < members.size(); i++) {
+	    	Student s = members.get(i);
 	        if (id.equals(s.getId())) {
 	            return true;
 	        }
@@ -62,7 +61,8 @@ public class Club {
 	
 	public boolean removeMemberById(String id) {
 
-	    for (Student s : members) {
+	    for (int i = 0; i < members.size(); i++) {
+	    	Student s = members.get(i);
 	        if (id.equals(s.getId())) {
 	            members.remove(s);
 	            return true;
@@ -74,7 +74,8 @@ public class Club {
 	
 	public Student searchMemberById(String id) {
 
-	    for (Student s : members) {
+	    for (int i = 0; i < members.size(); i++) {
+	    	Student s = members.get(i);
 	        if (id.equals(s.getId())) {
 	            return s;
 	        }
@@ -91,7 +92,8 @@ public class Club {
 	        return;
 	    }
 
-	    for (Student s : members) {
+	    for (int i = 0; i < members.size(); i++) {
+	    	Student s = members.get(i);
 	        System.out.println(s + "\n **************************");
 	    }
 	}

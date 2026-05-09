@@ -1,21 +1,22 @@
 import java.io.*;
-import java.util.LinkedList;
 import java.util.Scanner;
 
 
 public class School implements Payable {
+	private static final String LOGIN_COUNT_FILE = "login.txt";
+	private static final String USER_INPUT_FILE = "user_input.txt";
 	private String name;
-	private LinkedList<Person> people;
-	private LinkedList<Classroom> classrooms;
-	private LinkedList<Club> clubs;
+	private CustomLinkedList<Person> people;
+	private CustomLinkedList<Classroom> classrooms;
+	private CustomLinkedList<Club> clubs;
 	
 	
 
 	public School(String name, int peopleSize, int classroomSize) {
 		this.name = name;
-		this.people = new LinkedList<>();
-		this.classrooms = new LinkedList<>();
-		this.clubs = new LinkedList<>();
+		this.people = new CustomLinkedList<>();
+		this.classrooms = new CustomLinkedList<>();
+		this.clubs = new CustomLinkedList<>();
 	}
 	
 	
@@ -33,20 +34,23 @@ public class School implements Payable {
 	
 	public boolean removePersonById(String id) {
 
-	    for (Person p : people) {
+	    for (int i = 0; i < people.size(); i++) {
+	    	Person p = people.get(i);
 
 	        if (id.equals(p.getId())) {
 
 	            if (p instanceof Student) {
 
-	                for (Club c : clubs) {
+	                for (int j = 0; j < clubs.size(); j++) {
+	                	Club c = clubs.get(j);
 	                    c.removeMemberById(id);
 	                }
 	            }
 
 	            if (p instanceof Teacher) {
 
-	                for (Club c : clubs) {
+	                for (int j = 0; j < clubs.size(); j++) {
+	                	Club c = clubs.get(j);
 
 	                    Teacher supervisor = c.getSupervisor();
 
@@ -88,7 +92,8 @@ public class School implements Payable {
 	}
 
 	public Classroom searchClassroomByRoomNumber(String roomNumber) {
-		for (Classroom c : classrooms) {
+		for (int i = 0; i < classrooms.size(); i++) {
+			Classroom c = classrooms.get(i);
 
 		    if (roomNumber.equals(c.getRoomNumber())) {
 		        return c;
@@ -110,11 +115,13 @@ public class School implements Payable {
 
 	public boolean removeClubByName(String clubName) {
 
-	    for (Club c : clubs) {
+	    for (int i = 0; i < clubs.size(); i++) {
+	    	Club c = clubs.get(i);
 
 	        if (clubName.equals(c.getClubName())) {
 
-	            for (Person p : people) {
+	            for (int j = 0; j < people.size(); j++) {
+	            	Person p = people.get(j);
 
 	                if (p instanceof Student) {
 	                    ((Student) p).leaveClubSilently(clubName);
@@ -132,7 +139,8 @@ public class School implements Payable {
 
 	public Club searchClubByName(String clubName) {
 
-	    for (Club c : clubs) {
+	    for (int i = 0; i < clubs.size(); i++) {
+	    	Club c = clubs.get(i);
 
 	        if (clubName.equals(c.getClubName())) {
 	            return c;
@@ -144,7 +152,8 @@ public class School implements Payable {
 	
 	public Club searchClubBySupervisorId(String supervisorId) {
 
-	    for (Club c : clubs) {
+	    for (int i = 0; i < clubs.size(); i++) {
+	    	Club c = clubs.get(i);
 
 	        Teacher supervisor = c.getSupervisor();
 
@@ -165,7 +174,8 @@ public class School implements Payable {
 	        return;
 	    }
 
-	    for (Classroom c : classrooms) {
+	    for (int i = 0; i < classrooms.size(); i++) {
+	    	Classroom c = classrooms.get(i);
 	        System.out.println(c + "\n **************************");
 	    }
 	}
@@ -177,7 +187,8 @@ public class School implements Payable {
 	        return;
 	    }
 
-	    for (Club c : clubs) {
+	    for (int i = 0; i < clubs.size(); i++) {
+	    	Club c = clubs.get(i);
 	        System.out.println(c + "\n **************************");
 	    }
 	}
@@ -189,7 +200,8 @@ public class School implements Payable {
 	        return;
 	    }
 
-	    for (Person p : people) {
+	    for (int i = 0; i < people.size(); i++) {
+	    	Person p = people.get(i);
 	        System.out.println(p + "\n **************************");
 	    }
 	}
@@ -197,7 +209,8 @@ public class School implements Payable {
 	public double calculateMonthlyAmount() {
 		double total = 0;
 
-		for (Person p : people) {
+		for (int i = 0; i < people.size(); i++) {
+			Person p = people.get(i);
 		    total += p.calculateMonthlyAmount();
 		}
 		
@@ -309,7 +322,8 @@ public class School implements Payable {
 
 	    double allSalaries = 0;
 
-	    for (Person p : people) {
+	    for (int i = 0; i < people.size(); i++) {
+	    	Person p = people.get(i);
 
 	        if (p instanceof Employee) {
 
@@ -327,7 +341,8 @@ public class School implements Payable {
 
 	    double allFees = 0;
 
-	    for (Person p : people) {
+	    for (int i = 0; i < people.size(); i++) {
+	    	Person p = people.get(i);
 
 	        if (p instanceof Student) {
 	            allFees += p.calculateMonthlyAmount();
@@ -345,10 +360,9 @@ public class School implements Payable {
 			       "  Club Count: " + clubs.size();	}
 	
 	public void saveLoginCount() {
-		PrintWriter writer = null;
-		try {
-			writer = new PrintWriter("login.txt");
-			for (Person p : people) {
+		try (PrintWriter writer = new PrintWriter(LOGIN_COUNT_FILE)) {
+			for (int i = 0; i < people.size(); i++) {
+				Person p = people.get(i);
 				
 				if(p instanceof AdminStaff){
 					AdminStaff admin = (AdminStaff)p;
@@ -375,32 +389,51 @@ public class School implements Payable {
 		catch(FileNotFoundException e1) {
 			System.out.println(e1.getMessage());
 		}
-		finally {
-			writer.close();
-		}
 	}
 	
 	public void readLoginCount() throws EOFException{
-		Scanner read = null;
-		try {
-			read = new Scanner(new File("login.txt"));
+		boolean foundData = false;
+		
+		try (Scanner read = new Scanner(new File(LOGIN_COUNT_FILE))) {
 			while(read.hasNextLine()) {
+				foundData = true;
 				String r = read.nextLine();
 				System.out.println(r);
 			}
-			if(!read.hasNext())
-				throw new EOFException("End of the file");
-		
 		}
-		catch(EOFException e1) {
+		catch(FileNotFoundException e1) {
 			System.out.println(e1.getMessage());
+			return;
 		}
-		catch(FileNotFoundException e2) {
-			System.out.println(e2.getMessage());
+		
+		if(!foundData) {
+			throw new EOFException("No login count data has been saved yet.");
 		}
-		finally {
-			read.close();
+	}
+	
+	public void saveUserInput(String source, String name, String id) throws IOException {
+		try (PrintWriter writer = new PrintWriter(new FileWriter(USER_INPUT_FILE, true))) {
+			writer.println(source + " | name: " + name + " | id: " + id);
 		}
+	}
+	
+	public String readSavedUserInput() {
+		StringBuilder savedInput = new StringBuilder();
+		
+		try (Scanner read = new Scanner(new File(USER_INPUT_FILE))) {
+			while(read.hasNextLine()) {
+				savedInput.append(read.nextLine()).append(System.lineSeparator());
+			}
+		}
+		catch(FileNotFoundException e1) {
+			return "No saved user input file was found.";
+		}
+		
+		if(savedInput.length() == 0) {
+			return "No user input has been saved yet.";
+		}
+		
+		return savedInput.toString();
 	}
 	
 }

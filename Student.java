@@ -1,17 +1,15 @@
-import java.util.LinkedList;
-
 public class Student extends Person {
 	private String gradeLevel;
 	private double average;
 	private double feePerMonth;
-	private LinkedList<Club> clubsJoined;
+	private CustomLinkedList<Club> clubsJoined;
 	
 	public Student(String id, String name, int age, String gradeLevel, double average, double feePerMonth, int clubSize) {
 		super(id,name,age);
 		this.gradeLevel = gradeLevel;
 		this.average = average;
 		this.feePerMonth = feePerMonth;
-		clubsJoined = new LinkedList<>();
+		clubsJoined = new CustomLinkedList<>();
 	}
 	
 	public String getGradeLevel() {
@@ -51,7 +49,8 @@ public class Student extends Person {
 	
 	private boolean leaveClubInternal(String clubName, boolean printSuccess, boolean printFailure) {
 
-	    for (Club c : clubsJoined) {
+	    for (int i = 0; i < clubsJoined.size(); i++) {
+	    	Club c = clubsJoined.get(i);
 
 	        if (clubName.equals(c.getClubName())) {
 
@@ -74,7 +73,8 @@ public class Student extends Person {
 	
 	public Club searchClub(String clubName) {
 
-	    for (Club c : clubsJoined) {
+	    for (int i = 0; i < clubsJoined.size(); i++) {
+	    	Club c = clubsJoined.get(i);
 
 	        if (clubName.equals(c.getClubName())) {
 	            return c;
@@ -88,7 +88,8 @@ public class Student extends Person {
 	
 	public boolean hasJoinedClub(String clubName) {
 
-	    for (Club c : clubsJoined) {
+	    for (int i = 0; i < clubsJoined.size(); i++) {
+	    	Club c = clubsJoined.get(i);
 
 	        if (clubName.equals(c.getClubName())) {
 	            return true;
@@ -106,7 +107,8 @@ public class Student extends Person {
 	        return;
 	    }
 
-	    for (Club c : clubsJoined) {
+	    for (int i = 0; i < clubsJoined.size(); i++) {
+	    	Club c = clubsJoined.get(i);
 	        System.out.println(c + "\n **************************");
 	    }
 	}
