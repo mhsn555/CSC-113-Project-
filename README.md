@@ -1,6 +1,6 @@
-# CSC 113 Project - Phase 1
+# CSC 113 Project - Phase 1 & 2
 
-This repository contains Phase 1 of our project for the `CSC 113` course at `KSU`.
+This repository contains Phase 1 & 2 of our project for the `CSC 113` course at `KSU`.
 
 The project was done by:
 
